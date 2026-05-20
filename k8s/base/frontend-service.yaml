@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: deliveryrisk-frontend
+  namespace: deliveryrisk
+  labels:
+    app: deliveryrisk-frontend
+spec:
+  selector:
+    app: deliveryrisk-frontend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+

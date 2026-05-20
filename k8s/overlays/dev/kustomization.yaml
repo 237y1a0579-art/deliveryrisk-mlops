@@ -1,0 +1,22 @@
+resources:
+  - ../../base
+
+namespace: deliveryrisk
+
+images:
+  - name: ghcr.io/OWNER/REPO/api
+    newName: ghcr.io/OWNER/REPO/api
+    newTag: latest
+  - name: ghcr.io/OWNER/REPO/frontend
+    newName: ghcr.io/OWNER/REPO/frontend
+    newTag: latest
+  - name: ghcr.io/OWNER/REPO/drift
+    newName: ghcr.io/OWNER/REPO/drift
+    newTag: latest
+
+replicas:
+  - name: deliveryrisk-api
+    count: 1
+  - name: deliveryrisk-frontend
+    count: 1
+

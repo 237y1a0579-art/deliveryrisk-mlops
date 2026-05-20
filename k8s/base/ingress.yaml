@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: deliveryrisk
+  namespace: deliveryrisk
+spec:
+  rules:
+    - host: deliveryrisk.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: deliveryrisk-frontend
+                port:
+                  number: 80
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: deliveryrisk-api
+                port:
+                  number: 8000
+          - path: /drift
+            pathType: Prefix
+            backend:
+              service:
+                name: deliveryrisk-drift
+                port:
+                  number: 8010

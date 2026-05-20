@@ -1,0 +1,22 @@
+{
+  "failures": [],
+  "late_delivery_rate": 0.24266666666666667,
+  "null_counts": {
+    "actual_delivery_minutes": 0,
+    "basket_value": 0,
+    "customer_id": 0,
+    "distance_km": 0,
+    "driver_supply": 0,
+    "event_timestamp": 0,
+    "late_delivery": 0,
+    "merchant_id": 0,
+    "order_id": 0,
+    "prep_minutes": 0,
+    "promised_minutes": 0,
+    "traffic_index": 0,
+    "weather": 0,
+    "zone": 0
+  },
+  "passed": true,
+  "row_count": 12000
+}

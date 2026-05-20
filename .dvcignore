@@ -1,0 +1,7 @@
+.git/
+.venv/
+node_modules/
+mlruns/
+mlartifacts/
+services/frontend/dist/
+__pycache__/

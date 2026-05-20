@@ -1,0 +1,43 @@
+stages:
+  ingest:
+    cmd: python -m pipelines.ingest
+    deps:
+      - pipelines/ingest.py
+      - params.yaml
+    outs:
+      - data/raw/orders.csv
+
+  validate:
+    cmd: python -m pipelines.validate
+    deps:
+      - pipelines/validate.py
+      - data/raw/orders.csv
+      - params.yaml
+    outs:
+      - data/processed/orders_validated.parquet
+    metrics:
+      - reports/data_validation.json:
+          cache: false
+
+  features:
+    cmd: python -m pipelines.features
+    deps:
+      - pipelines/features.py
+      - data/processed/orders_validated.parquet
+    outs:
+      - data/processed/training_features.parquet
+      - data/processed/feature_store.parquet
+      - data/reference/reference_features.parquet
+
+  train:
+    cmd: python -m pipelines.train
+    deps:
+      - pipelines/train.py
+      - data/processed/training_features.parquet
+      - params.yaml
+    outs:
+      - models/champion.joblib
+    metrics:
+      - reports/model_metrics.json:
+          cache: false
+

@@ -1,0 +1,90 @@
+schema: '2.0'
+stages:
+  ingest:
+    cmd: python -m pipelines.ingest
+    deps:
+    - path: params.yaml
+      hash: md5
+      md5: 37b4aefeaa6380e4ce2c67858933ecc6
+      size: 264
+    - path: pipelines/ingest.py
+      hash: md5
+      md5: dcbb466c179a06ab21e4f211488c33c4
+      size: 3197
+    outs:
+    - path: data/raw/orders.csv
+      hash: md5
+      md5: df0fad220f720013db573f13d126d760
+      size: 1181807
+  validate:
+    cmd: python -m pipelines.validate
+    deps:
+    - path: data/raw/orders.csv
+      hash: md5
+      md5: df0fad220f720013db573f13d126d760
+      size: 1181807
+    - path: params.yaml
+      hash: md5
+      md5: 37b4aefeaa6380e4ce2c67858933ecc6
+      size: 264
+    - path: pipelines/validate.py
+      hash: md5
+      md5: 3faea3a80b51c6d5f9d90f21b03c747e
+      size: 3012
+    outs:
+    - path: data/processed/orders_validated.parquet
+      hash: md5
+      md5: 4db9472a2a3b388ed781f93f73802f0b
+      size: 376166
+    - path: reports/data_validation.json
+      hash: md5
+      md5: 2c9d4c7b986cdb40a4bb0c6dc64f92a7
+      size: 472
+  features:
+    cmd: python -m pipelines.features
+    deps:
+    - path: data/processed/orders_validated.parquet
+      hash: md5
+      md5: 4db9472a2a3b388ed781f93f73802f0b
+      size: 376166
+    - path: pipelines/features.py
+      hash: md5
+      md5: a47b081944afa2ce1d0fcd50254eacf8
+      size: 2734
+    outs:
+    - path: data/processed/feature_store.parquet
+      hash: md5
+      md5: 8d6e1ca565780a21ca5e2e1365394688
+      size: 503106
+    - path: data/processed/training_features.parquet
+      hash: md5
+      md5: bef4cfc50eff33050875759c6d1209f5
+      size: 537143
+    - path: data/reference/reference_features.parquet
+      hash: md5
+      md5: 0c515cab2d7f8bf1909d9fbb1a09287e
+      size: 125333
+  train:
+    cmd: python -m pipelines.train
+    deps:
+    - path: data/processed/training_features.parquet
+      hash: md5
+      md5: bef4cfc50eff33050875759c6d1209f5
+      size: 537143
+    - path: params.yaml
+      hash: md5
+      md5: 37b4aefeaa6380e4ce2c67858933ecc6
+      size: 264
+    - path: pipelines/train.py
+      hash: md5
+      md5: 9b01eda92865ff67b71177bebd5a87f5
+      size: 4637
+    outs:
+    - path: models/champion.joblib
+      hash: md5
+      md5: 3f2197c82c2a45fc9935458d65f4d8f1
+      size: 7319332
+    - path: reports/model_metrics.json
+      hash: md5
+      md5: d3358586196afa84815f85303297b540
+      size: 161

@@ -1,0 +1,20 @@
+{
+  "checked_at_utc": "2026-05-20T08:14:40.214493+00:00",
+  "decision": "promote",
+  "metrics": {
+    "accuracy": 0.68625,
+    "f1": 0.4265041888804265,
+    "precision": 0.38303693570451436,
+    "recall": 0.48109965635738833,
+    "roc_auc": 0.6705482403910494
+  },
+  "mlflow_alias": "champion",
+  "model_name": "deliveryrisk-late-order",
+  "passed": true,
+  "promoted_version": "3",
+  "reasons": [],
+  "thresholds": {
+    "f1": 0.4,
+    "roc_auc": 0.65
+  }
+}

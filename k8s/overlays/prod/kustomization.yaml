@@ -1,0 +1,11 @@
+resources:
+  - ../../base
+
+namespace: deliveryrisk
+
+replicas:
+  - name: deliveryrisk-api
+    count: 3
+  - name: deliveryrisk-frontend
+    count: 3
+

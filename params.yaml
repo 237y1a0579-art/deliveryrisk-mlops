@@ -1,0 +1,15 @@
+data:
+  n_orders: 12000
+  random_seed: 42
+  validation_min_rows: 1000
+training:
+  test_size: 0.2
+  random_seed: 42
+  n_estimators: 250
+  max_depth: 9
+  min_auc: 0.65
+  min_f1: 0.40
+monitoring:
+  drift_psi_warn: 0.15
+  drift_psi_fail: 0.25
+  min_inference_rows: 50

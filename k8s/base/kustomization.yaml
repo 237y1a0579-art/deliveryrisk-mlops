@@ -1,0 +1,10 @@
+resources:
+  - namespace.yaml
+  - api-deployment.yaml
+  - api-service.yaml
+  - frontend-deployment.yaml
+  - frontend-service.yaml
+  - drift-deployment.yaml
+  - drift-service.yaml
+  - ingress.yaml
+

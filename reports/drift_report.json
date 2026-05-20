@@ -1,0 +1,64 @@
+{
+  "current_rows": 2,
+  "drifted_features": [
+    "distance_km",
+    "basket_value",
+    "prep_minutes",
+    "driver_supply",
+    "traffic_index",
+    "promised_minutes",
+    "customer_late_rate_30d",
+    "merchant_late_rate_30d",
+    "zone_late_rate_30d"
+  ],
+  "features": {
+    "basket_value": {
+      "drifted": false,
+      "ks_p_value": 0.422241,
+      "psi": 8.2877
+    },
+    "customer_late_rate_30d": {
+      "drifted": false,
+      "ks_p_value": 0.474973,
+      "psi": 8.5074
+    },
+    "distance_km": {
+      "drifted": false,
+      "ks_p_value": 0.115919,
+      "psi": 8.2923
+    },
+    "driver_supply": {
+      "drifted": true,
+      "ks_p_value": 0.002566,
+      "psi": 8.3061
+    },
+    "merchant_late_rate_30d": {
+      "drifted": true,
+      "ks_p_value": 0.033221,
+      "psi": 8.2837
+    },
+    "prep_minutes": {
+      "drifted": false,
+      "ks_p_value": 0.051087,
+      "psi": 8.2155
+    },
+    "promised_minutes": {
+      "drifted": false,
+      "ks_p_value": 0.315409,
+      "psi": 8.3061
+    },
+    "traffic_index": {
+      "drifted": true,
+      "ks_p_value": 0.020803,
+      "psi": 8.2649
+    },
+    "zone_late_rate_30d": {
+      "drifted": true,
+      "ks_p_value": 0.006663,
+      "psi": 8.2834
+    }
+  },
+  "max_psi": 8.5074,
+  "reference_rows": 4200,
+  "status": "drift_detected"
+}

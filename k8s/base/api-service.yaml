@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: deliveryrisk-api
+  namespace: deliveryrisk
+  labels:
+    app: deliveryrisk-api
+spec:
+  selector:
+    app: deliveryrisk-api
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+

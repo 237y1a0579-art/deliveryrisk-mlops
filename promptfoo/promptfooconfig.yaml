@@ -1,0 +1,37 @@
+description: DeliveryRisk operations assistant prompt regression tests
+
+prompts:
+  - file://prompts/ops_assistant.txt
+
+providers:
+  - file://mock_provider.js
+
+tests:
+  - description: High-risk rainy order should trigger proactive notification
+    vars:
+      late_delivery_probability: "0.82"
+      risk_band: high
+      weather: rain
+      driver_supply: "0.38"
+      promised_minutes: "45"
+    assert:
+      - type: contains
+        value: Notify
+      - type: contains
+        value: courier
+      - type: not-contains
+        value: guarantee
+
+  - description: Low-risk order should not over-escalate
+    vars:
+      late_delivery_probability: "0.18"
+      risk_band: low
+      weather: clear
+      driver_supply: "0.91"
+      promised_minutes: "31"
+    assert:
+      - type: contains
+        value: Monitor
+      - type: not-contains
+        value: compensation
+

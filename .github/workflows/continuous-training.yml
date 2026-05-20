@@ -1,0 +1,90 @@
+name: Continuous Training
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 2 * * 1"
+  push:
+    branches: [main]
+    paths:
+      - "data/**"
+      - "params.yaml"
+      - "pipelines/**"
+      - "scripts/promote_model.py"
+      - "scripts/update_kustomize_image.py"
+      - ".github/workflows/continuous-training.yml"
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAMESPACE: ${{ github.repository }}
+  MODEL_NAME: deliveryrisk-late-order
+  MODEL_IMAGE_TAG: model-${{ github.run_number }}
+
+jobs:
+  retrain-promote-dev:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Reproduce data and training pipeline
+        run: dvc repro
+
+      - name: Gate model quality
+        run: python scripts/promote_model.py --model-name "${MODEL_NAME}"
+
+      - name: Upload training artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: training-artifacts-${{ github.run_number }}
+          path: |
+            reports/*.json
+            models/champion.joblib
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push API image with promoted model
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: services/api/Dockerfile
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/api:${{ env.MODEL_IMAGE_TAG }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/api:latest
+
+      - name: Update dev GitOps image tag
+        run: |
+          python scripts/update_kustomize_image.py \
+            --file k8s/overlays/dev/kustomization.yaml \
+            --service api \
+            --new-name ${{ env.REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/api \
+            --new-tag ${{ env.MODEL_IMAGE_TAG }}
+
+      - name: Commit GitOps promotion
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add k8s/overlays/dev/kustomization.yaml
+          git diff --cached --quiet || git commit -m "chore: promote retrained model image ${{ env.MODEL_IMAGE_TAG }}"
+          git push
