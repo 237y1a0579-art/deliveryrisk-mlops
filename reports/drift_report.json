@@ -1,5 +1,5 @@
 {
-  "current_rows": 2,
+  "current_rows": 4,
   "drifted_features": [
     "distance_km",
     "basket_value",
@@ -14,47 +14,47 @@
   "features": {
     "basket_value": {
       "drifted": false,
-      "ks_p_value": 0.422241,
-      "psi": 8.2877
+      "ks_p_value": 0.129073,
+      "psi": 6.8114
     },
     "customer_late_rate_30d": {
       "drifted": false,
-      "ks_p_value": 0.474973,
+      "ks_p_value": 0.167828,
       "psi": 8.5074
     },
     "distance_km": {
-      "drifted": false,
-      "ks_p_value": 0.115919,
-      "psi": 8.2923
+      "drifted": true,
+      "ks_p_value": 0.006739,
+      "psi": 6.8212
     },
     "driver_supply": {
       "drifted": true,
-      "ks_p_value": 0.002566,
+      "ks_p_value": 3e-06,
       "psi": 8.3061
     },
     "merchant_late_rate_30d": {
       "drifted": true,
-      "ks_p_value": 0.033221,
-      "psi": 8.2837
+      "ks_p_value": 0.000555,
+      "psi": 6.8089
     },
     "prep_minutes": {
-      "drifted": false,
-      "ks_p_value": 0.051087,
+      "drifted": true,
+      "ks_p_value": 0.003499,
       "psi": 8.2155
     },
     "promised_minutes": {
       "drifted": false,
-      "ks_p_value": 0.315409,
-      "psi": 8.3061
+      "ks_p_value": 0.065222,
+      "psi": 6.8276
     },
     "traffic_index": {
       "drifted": true,
-      "ks_p_value": 0.020803,
+      "ks_p_value": 0.000885,
       "psi": 8.2649
     },
     "zone_late_rate_30d": {
       "drifted": true,
-      "ks_p_value": 0.006663,
+      "ks_p_value": 2.3e-05,
       "psi": 8.2834
     }
   },

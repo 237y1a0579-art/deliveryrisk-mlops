@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/YOUR_GITHUB_USERNAME/deliveryrisk-mlops.git
+    repoURL: https://github.com/237y1a0579-art/deliveryrisk-mlops.git
     targetRevision: main
     path: k8s/overlays/dev
   destination:
