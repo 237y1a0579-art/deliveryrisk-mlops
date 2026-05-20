@@ -1,5 +1,4 @@
 name: Continuous Training
-
 on:
   workflow_dispatch:
   schedule:
@@ -15,6 +14,7 @@ on:
       - ".github/workflows/continuous-training.yml"
 
 env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   REGISTRY: ghcr.io
   IMAGE_NAMESPACE: ${{ github.repository }}
   MODEL_NAME: deliveryrisk-late-order
@@ -41,10 +41,32 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Start MLflow server
+        run: |
+          mkdir -p /tmp/mlartifacts
+          mlflow server \
+            --host 127.0.0.1 \
+            --port 5000 \
+            --backend-store-uri sqlite:////tmp/mlflow.db \
+            --default-artifact-root /tmp/mlartifacts &
+          sleep 8
+
       - name: Reproduce data and training pipeline
-        run: dvc repro
+        env:
+          MLFLOW_TRACKING_URI: http://127.0.0.1:5000
+          MLFLOW_REGISTRY_URI: http://127.0.0.1:5000
+          MODEL_NAME: deliveryrisk-late-order
+        run: |
+          python -m pipelines.ingest
+          python -m pipelines.validate
+          python -m pipelines.features
+          python -m pipelines.train
 
       - name: Gate model quality
+        env:
+          MLFLOW_TRACKING_URI: http://127.0.0.1:5000
+          MLFLOW_REGISTRY_URI: http://127.0.0.1:5000
+          MODEL_NAME: deliveryrisk-late-order
         run: python scripts/promote_model.py --model-name "${MODEL_NAME}"
 
       - name: Upload training artifacts
