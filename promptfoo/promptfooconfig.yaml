@@ -4,7 +4,7 @@ prompts:
   - file://prompts/ops_assistant.txt
 
 providers:
-  - file://mock_provider.js
+  - id: file://mock_provider.js
 
 tests:
   - description: High-risk rainy order should trigger proactive notification
@@ -34,4 +34,3 @@ tests:
         value: Monitor
       - type: not-contains
         value: compensation
-

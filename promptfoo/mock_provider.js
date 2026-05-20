@@ -1,19 +1,25 @@
-module.exports = {
-  id: "mock-delivery-ops-assistant",
-  callApi: async function callApi(prompt) {
-    const isHighRisk = prompt.includes("Risk band: high");
-    const isStorm = prompt.includes("Weather: storm") || prompt.includes("Weather: rain");
-    let output = "Monitor the order and refresh the ETA after pickup confirmation.";
+module.exports = class MockProvider {
+  id() {
+    return 'mock-provider';
+  }
 
-    if (isHighRisk && isStorm) {
-      output =
-        "Notify the customer about weather-related delay risk, prioritize courier reassignment, and refresh the ETA after pickup.";
-    } else if (isHighRisk) {
-      output =
-        "Notify the customer about possible delay, route the order to the operations queue, and review courier availability.";
+  async callApi(prompt, context) {
+    const vars = context?.vars || {};
+    const risk = vars.risk_band || 'low';
+    const prob = parseFloat(vars.late_delivery_probability || '0');
+
+    let response = '';
+
+    if (risk === 'high' || prob > 0.7) {
+      response = 'Notify the courier immediately. High risk of late delivery detected. Consider proactive customer communication.';
+    } else if (risk === 'medium' || prob > 0.4) {
+      response = 'Monitor the order closely. Moderate risk detected. Watch for further delays.';
+    } else {
+      response = 'Monitor only. Low risk order. No immediate action needed.';
     }
 
-    return { output };
-  },
+    return {
+      output: response,
+    };
+  }
 };
-
