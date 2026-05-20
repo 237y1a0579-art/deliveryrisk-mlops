@@ -35,6 +35,14 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+      - name: Start MLflow server
+        run: |
+          mlflow server \
+            --host 127.0.0.1 \
+            --port 5000 \
+            --backend-store-uri sqlite:///mlflow.db \
+            --default-artifact-root ./mlartifacts &
+          sleep 5
       - name: Run ML pipeline directly
         env:
           MLFLOW_TRACKING_URI: http://127.0.0.1:5000
