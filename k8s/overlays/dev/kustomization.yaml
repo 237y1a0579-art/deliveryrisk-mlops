@@ -4,7 +4,7 @@ namespace: deliveryrisk
 images:
 - name: ghcr.io/OWNER/REPO/api
   newName: ghcr.io/237y1a0579-art/deliveryrisk-mlops/api
-  newTag: model-14
+  newTag: model-15
 - name: ghcr.io/OWNER/REPO/frontend
   newName: ghcr.io/237y1a0579-art/deliveryrisk-mlops/frontend
   newTag: latest
